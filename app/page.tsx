@@ -11,10 +11,10 @@ const Home = () => {
     <Latihan name="muhammd reza" userName="reza" age={20} isVerified={false} />
     <Latihan name="shirin kirani faisal" userName="shirin" age={15} isVerified={true} />
     <Card nama="Ini Card">
-      <p>saya belajar children</p>
+      <Button title="simpan" isDisabled={false}/>
+      <Button title="cancel" isDisabled={true}/>
     </Card>
-    <Button title="simpan" isDisabled={false}/>
-    <Button title="cancel" isDisabled={true}/>
+    
     </div>
   );
 }
