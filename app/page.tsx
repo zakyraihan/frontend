@@ -12,7 +12,7 @@ const Home = () => {
     <Latihan name="shirin kirani faisal" userName="shirin" age={15} isVerified={true} />
     <Card nama="Ini Card">
       <Button title="simpan" isDisabled={false}/>
-      <Button title="cancel" isDisabled={true}/>
+    <Button title="cancel" isDisabled={true}/>
     </Card>
     
     </div>
