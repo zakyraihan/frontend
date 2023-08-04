@@ -1,20 +1,26 @@
-import { ReactNode } from "react";
 import React from 'react'
+import { ReactNode } from 'react'
 
-interface Container {
-    nama: string
+interface Cards {
+    title: string
+    subtitle: string
+    desc?: string
     children: ReactNode
 }
 
-const Card: React.FC<Container> = ({  nama, children  }) => {
+const Card: React.FC<Cards> = ({ title, subtitle, desc, children }) => {
   return (
-    <div className="border-2 p-2">
-        <div className="border-2 border-red-500">
-            <h5 className="text-xl p-2">{nama}</h5>
+    <>
+      <div className='border-2 p-3'>
+        <h1>{title}</h1>
+        <h2>{subtitle}</h2>
+        <div className='border-2 '>
+            <p>{children}</p>
         </div>
-        <div className="py-3">{children}</div>
-    </div>
+      </div>
+    </>
   )
 }
 
 export default Card
+
