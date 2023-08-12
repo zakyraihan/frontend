@@ -8,7 +8,7 @@ interface Cards {
     children: ReactNode
 }
 
-const Card: React.FC<Cards> = ({ title, subtitle, desc, children }) => {
+const Card: React.FC<Cards> = ({ title, subtitle, desc, children, ...props }) => {
   return (
     <>
       <div className='border-2 p-3'>
