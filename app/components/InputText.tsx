@@ -15,6 +15,7 @@ const InputText: React.FC<InputProps & React.InputHTMLAttributes<HTMLInputElemen
             "border-red-500 border-2": isError == true,
             "border-gray-500": isError == false
         })}
+
         {...props}
       />
 
