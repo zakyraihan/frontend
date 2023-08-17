@@ -1,27 +1,63 @@
 "use client"; // gunakan use client karena ada onChange pda komponen
 import { useState } from "react";
+import Card from "./components/Card";
 import Button from "./components/Button";
+import InputText from "./components/InputText";
+
+export type Identitas = {
+  nama: string;
+  sekolah: string;
+  umur: number | null;
+};
+
+export type Hasil = {
+  mata_pelajaran: string;
+  nilai: number | null;
+};
 
 const Home = () => {
-  let [message, setMessage] = useState("hello");
+  let [tanggal, setTanggal] = useState(0);
+  let [bulan, setBulan] = useState("Agustus");
 
   return (
-    <div className="space-y-5">
-      <h1>{message}</h1>
+    <main className="space-y-5 p-5">
+      <h1>Latihan</h1>
+      <Card
+        bulan={bulan}
+        tanggal={tanggal}
+        setTanggal={setTanggal}
+        setBulan={setBulan}
+      />
+      <div className="flex gap-3">
       <Button
-        title="ihsan"
-        variant="solid"
+        onClick={() => {
+          setTanggal((c) => c + 1);
+        }}
         colorSchema="blue"
-        onClick={() => setMessage('hello ihsan')}
+        variant="solid"
+        title="tambah"
       />
       <Button
-        title="hilmi"
+      isDisabled={tanggal === 0 ? true : false}
+        onClick={() => {
+          setTanggal((c) => c != 0 ? c - 1 : c);
+        }}
+        colorSchema="red"
         variant="solid"
-        colorSchema="blue"
-        onClick={() => setMessage('hello hilmi')}
+        title="kurang"
       />
-    </div>
+      </div>
+      <InputText
+        id="bulan"
+        name={"bulan"}
+        value={bulan}
+        onChange={(e) => {
+          setBulan(e.target.value);
+        }}
+      />
+    </main>
   );
 };
 
 export default Home;
+

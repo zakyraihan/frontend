@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction } from "react";
-import { tanggal, bulan } from "../page";
 import Button from "./Button";
 
 interface Latihan {
@@ -14,14 +13,18 @@ interface Latihan {
 
 const Card: React.FC<Latihan> = ({ tanggal, setTanggal, bulan, setBulan }) => {
   return (
-    <div className="border w-[20rem] h-[24rem] shadow-lg p-5">
+    <div className="border w-[20rem] h-[24rem] shadow-lg p-5 rounded-lg">
       <div className="bg-red-500 text-white p-3 text-center">{bulan}</div>
       <p className="text-[10em] text-center">{tanggal}</p>
       <div className="flex justify-center">
         <Button
           title="clear"
           colorSchema="red"
-          onClick={() => {setBulan('agustus'), setTanggal((prev) => prev - prev)}}
+          variant="solid"
+          onClick={() => {
+            setBulan('agustus'), 
+            setTanggal((prev) => prev - prev)
+        }}
 
         />
       </div>
