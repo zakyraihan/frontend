@@ -5,6 +5,8 @@ import { profile } from "console";
 import { stringify } from "querystring";
 import arr from "./utils/data";
 import LatihanState from "./components/LatihanState";
+import App from "./components/Test";
+import Card from "./components/Card";
 
 type identitas = {
   nama: string;
@@ -44,11 +46,11 @@ const Home = () => {
 
   let angka = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-
-
   return (
     <div className="space-y-5">
-      <LatihanState />
+      <div className="my-5">
+        <LatihanState />
+      </div>
       <div className="bg-slate-100 px-4 py-5">
         <h1>Daftar Hasil Siswa</h1>
         {hasil.map((n, index) => {
