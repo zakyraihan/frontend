@@ -180,7 +180,7 @@ const LatihanState = () => {
           isDisabled={hasil.mata_pelajaran === "" || hasil.nilai === ""}
           colorSchema="red"
           variant="solid"
-          onMouseEnter={simpanHasil}
+          onClick={simpanHasil}
         />
       </div>
     </section>
