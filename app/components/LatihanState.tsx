@@ -1,21 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import Button from "./Button";
 import Kartu from "./Kartu";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { FaRegCheckCircle } from "react-icons/fa";
+import LoveButton from "./Love";
 
 type TypeHasil = {
-  id: string;
+  id: number;
   mata_pelajaran: string;
   nilai: string;
 };
 
 const LatihanState = () => {
+  let [count, setCount] = useState(0);
   let [hasil, setHasil] = useState<TypeHasil>({
-    id: "",
+    id: count,
     mata_pelajaran: "",
     nilai: "",
   });
-
   let [hasilMap, setHasilMap] = useState<TypeHasil[]>([]);
 
   const fisika = () => {
@@ -82,24 +85,29 @@ const LatihanState = () => {
   };
 
   const simpanHasil = () => {
-    // menambahkan kartu mapel dan nilai
     setHasilMap((prev) => {
+      setCount(count + 1); // Increment count
       return [
         ...prev,
         {
-          id: hasil.id,
+          id: count, // Gunakan count sebagai id
           mata_pelajaran: hasil.mata_pelajaran,
           nilai: hasil.nilai,
         },
       ];
     });
+
+    setHasil((prev) => {
+      return {
+        ...prev,
+        mata_pelajaran: "",
+        nilai: "",
+      };
+    });
   };
 
-  const deleteItem = (indexToDelete: any) => {
-    // menghapus kartu mapel dan nilai
-    const updatedData = [...hasilMap];
-    updatedData.splice(indexToDelete, 1);
-    setHasilMap(updatedData);
+  const deleteItem = (indexToDelete: number) => {
+    setHasilMap((prev) => prev.filter((_, index) => index !== indexToDelete));
   };
 
   return (
@@ -107,15 +115,25 @@ const LatihanState = () => {
       <div className="pb-10">
         {hasilMap.map((n, index) => (
           <Kartu key={index}>
-            <p>mata pelajaran: {n.mata_pelajaran}</p>
-            <p>nilai: {n.nilai}</p>
-            <div className="">
-              <Button
-                title="hapus"
-                colorSchema="red"
-                variant="solid"
-                onClick={() => deleteItem(index)}
-              />
+            <div className="flex justify-between items-center">
+              <div className="">
+                <p>ID: {n.id}</p>
+                <hr />
+                <p>Mata pelajaran: {n.mata_pelajaran}</p>
+                <p>Nilai: {n.nilai}</p>
+              </div>
+              <div className="flex gap-3">
+                <div className="border p-3 shadow-lg rounded-full">
+                  <Button
+                    className="bg-red-500 rounded-full text-white px-5 py-2"
+                    title="hapus"
+                    colorSchema="red"
+                    variant="solid"
+                    onClick={() => deleteItem(index)}
+                  />
+                </div>
+                <LoveButton />
+              </div>
             </div>
           </Kartu>
         ))}

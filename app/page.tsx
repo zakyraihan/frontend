@@ -7,6 +7,8 @@ import arr from "./utils/data";
 import LatihanState from "./components/LatihanState";
 import App from "./components/Test";
 import Card from "./components/Card";
+import ButtonDel from "./components/LoveButton";
+import LoveButton from "./components/Love";
 
 type identitas = {
   nama: string;
@@ -49,11 +51,12 @@ const Home = () => {
   return (
     <div className="space-y-5">
       <div className="my-5">
-        <LatihanState />
+        {/* <LatihanState /> */}
       </div>
-      <div className="bg-slate-100 px-4 py-5">
+      
+      {/* <div className="bg-slate-100 px-4 py-5">
         <h1>Daftar Hasil Siswa</h1>
-        {hasil.map((n, index) => {
+        {hasil.map((nbu, index) => {
           return (
             <section key={index} className=" flex flex-col ">
               <div className="my-5 gap-2 flex md:flex-row flex-col ">
@@ -209,6 +212,7 @@ const Home = () => {
           setMessage("hello"), setCount((prev) => prev - prev);
         }}
       />
+    </div> */}
     </div>
   );
 };
