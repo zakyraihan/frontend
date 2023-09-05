@@ -125,6 +125,7 @@ const LatihanState = () => {
               <div className="flex gap-3">
                 <div className="border p-3 shadow-lg rounded-full">
                   <Button
+                    isDisabled={hasilMap.length === 1}
                     className="bg-red-500 rounded-full text-white px-5 py-2"
                     title="hapus"
                     colorSchema="red"

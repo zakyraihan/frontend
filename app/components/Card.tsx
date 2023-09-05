@@ -13,8 +13,9 @@ interface Latihan {
 
 const Card: React.FC<Latihan> = ({ tanggal, setTanggal, bulan, setBulan }) => {
   return (
-    <div className="border w-[20rem] h-[24rem] shadow-lg p-5 rounded-lg">
-      <div className="bg-red-500 text-white p-3 text-center">{bulan}</div>
+    <>
+    <div className="border w-[18rem] h-[22rem] shadow-lg  rounded-xl">
+      <div className="bg-red-500 text-white rounded-t-xl p-3 text-center">{bulan}</div>
       <p className="text-[10em] text-center">{tanggal}</p>
       <div className="flex justify-center">
         <Button
@@ -29,6 +30,7 @@ const Card: React.FC<Latihan> = ({ tanggal, setTanggal, bulan, setBulan }) => {
         />
       </div>
     </div>
+    </>
   );
 };
 

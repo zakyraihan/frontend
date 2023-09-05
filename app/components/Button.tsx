@@ -24,7 +24,7 @@ const Button: React.FC<ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElemen
         "outline bg-green-500 text-white": variant === 'solids' && colorSchema === 'green',
         "bg-red-600 text-white solid": colorSchema === 'reds' &&  variant === 'solid',
         "bg-red-500 text-white solid": variant === 'solid' && colorSchema === 'red',
-        'opacity-20': isDisabled
+        "opacity-20": isDisabled
      })} 
         {...props}
      >{title}</button>
