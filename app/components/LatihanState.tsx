@@ -4,7 +4,7 @@ import Button from "./Button";
 import Kartu from "./Kartu";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { FaRegCheckCircle } from "react-icons/fa";
-import LoveButton from "./Love";
+
 
 type TypeHasil = {
   id: number;
@@ -133,7 +133,6 @@ const LatihanState = () => {
                     onClick={() => deleteItem(index)}
                   />
                 </div>
-                <LoveButton />
               </div>
             </div>
           </Kartu>

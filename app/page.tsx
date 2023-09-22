@@ -283,7 +283,7 @@ const Home = () => {
         onChange={(e) => {
           setBulan(e.target.value);
         }}
-      />      
+      />    
     </main>
   );
 };

@@ -1,3 +1,4 @@
+"use client"
 import React, { useState } from "react";
 import Button from "./Button";
 
@@ -11,9 +12,7 @@ function App() {
   const [subjectName, setSubjectName] = useState("");
   const [subjectScore, setSubjectScore] = useState(0);
 
-  const handleSubjectNameChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleSubjectNameChange = ( event: React.ChangeEvent<HTMLInputElement> ) => {
     setSubjectName(event.target.value);
   };
 

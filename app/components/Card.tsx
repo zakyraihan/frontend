@@ -4,9 +4,6 @@ import Button from "./Button";
 interface Latihan {
   tanggal: number;
   setTanggal: Dispatch<SetStateAction<number>>;
-}
-
-interface Latihan {
   bulan: string;
   setBulan: Dispatch<SetStateAction<string>>;
 }
