@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 
 type Variant = 'solid' | 'outline' | 'solids'
-type ColorSchema = 'blue' | 'red' | 'green' | 'reds'
+type ColorSchema = 'blue' | 'red' | 'green' | 'reds' | 'oren'
 
 
 interface ButtonProps {
@@ -14,8 +14,8 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>> = ({title, isDisabled, variant, colorSchema, ...props}) => {
    return (
-     <button disabled={isDisabled} className={clsx(`w-10 md:rounded-lg`, {
-        "bg-blue-600 text-white solid": variant === 'solid' && colorSchema === 'blue',
+     <button disabled={isDisabled} className={clsx(`py-5 md:w-[8rem] rounded-lg`, {
+        "bg-blue-600 text-white solid hover:bg-slate-400 duration-150 hover:text-white": variant === 'solid' && colorSchema === 'blue',
         "bg-blue-400  text-white solid": variant === 'solid' && colorSchema === 'blue',
         "bg-green-600  text-white solid": variant === 'solid' && colorSchema === 'green',
         "outline outline-blue-600 text-blue-600": variant === "outline" && colorSchema === 'blue',
@@ -25,6 +25,7 @@ const Button: React.FC<ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElemen
         "outline bg-green-500 text-white": variant === 'solids' && colorSchema === 'green',
         "bg-red-600 text-white solid": colorSchema === 'reds' &&  variant === 'solid',
         "bg-red-500 text-white solid": variant === 'solid' && colorSchema === 'red',
+        "bg-orange-400 text-white solid": variant === 'solid' && colorSchema === 'oren',
         "opacity-20": isDisabled
      })} 
         {...props}
