@@ -232,6 +232,7 @@ import Card from "./components/Card";
 import Button from "./components/Button";
 import InputText from "./components/InputText";
 import LatihanState from "./components/LatihanState";
+import Calculator from "./components/Calculator";
 
 export type Identitas = {
   nama: string;
@@ -245,47 +246,48 @@ export type Hasil = {
 };
 
 const Home = () => {
-  let [tanggal, setTanggal] = useState(0);
-  let [bulan, setBulan] = useState("Agustus");
+  <Calculator />
+  // let [tanggal, setTanggal] = useState(0);
+  // let [bulan, setBulan] = useState("Agustus");
 
-  return (
-    <main className="space-y-5 m-5">
-      <LatihanState />
-      <h1>Latihan</h1>
-      <Card
-        bulan={bulan}
-        tanggal={tanggal}
-        setTanggal={setTanggal}
-        setBulan={setBulan}
-      />
-      <div className="flex gap-3">
-        <Button
-          onClick={() => {
-            setTanggal((c) => (c < 31 ? c + 1 : c));
-          }}
-          colorSchema="blue"
-          title="tambah"
-          variant="solid"
-        />
-        <Button
-          onClick={() => {
-            setTanggal((c) => (c != 0 ? c - 1 : c));
-          }}
-          colorSchema="red"
-          title="kurang"
-          variant="solid"
-        />
-      </div>
-      <InputText
-        id="bulan"
-        name={"bulan"}
-        value={bulan}
-        onChange={(e) => {
-          setBulan(e.target.value);
-        }}
-      />    
-    </main>
-  );
+  // return (
+  //   <main className="space-y-5 m-5">
+  //     <LatihanState />
+  //     <h1>Latihan</h1>
+  //     <Card
+  //       bulan={bulan}
+  //       tanggal={tanggal}
+  //       setTanggal={setTanggal}
+  //       setBulan={setBulan}
+  //     />
+  //     <div className="flex gap-3">
+  //       <Button
+  //         onClick={() => {
+  //           setTanggal((c) => (c < 31 ? c + 1 : c));
+  //         }}
+  //         colorSchema="blue"
+  //         title="tambah"
+  //         variant="solid"
+  //       />
+  //       <Button
+  //         onClick={() => {
+  //           setTanggal((c) => (c != 0 ? c - 1 : c));
+  //         }}
+  //         colorSchema="red"
+  //         title="kurang"
+  //         variant="solid"
+  //       />
+  //     </div>
+  //     <InputText
+  //       id="bulan"
+  //       name={"bulan"}
+  //       value={bulan}
+  //       onChange={(e) => {
+  //         setBulan(e.target.value);
+  //       }}
+  //     />    
+  //   </main>
+  // );
 };
 
 export default Home;
