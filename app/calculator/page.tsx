@@ -35,7 +35,7 @@ const Home = () => {
       newInput += "/"; // Menambahkan operator pembagian '/'
       setInput(newInput);
     } else if (clickedValue === ",") {
-      newInput += "."; // Menambahkan operator perkomaan '. ( menggunakan titik (!koma) )'
+      newInput += "."; // Menambahkan operator perkomaan '.' ( menggunakan titik (!koma) )'
       setInput(newInput);
     } else {
       newInput += clickedValue;
@@ -71,13 +71,17 @@ const Home = () => {
   return (
     <div className="mt-[5rem]">
       <div className="bg-slate-200 rounded-xl shadow-2xl md:w-[37rem] mx-auto flex md:p-3 p-3  flex-col">
+        <div className="my-4 flex justify-between">
+           <p className="text-2xl font-bold text-slate-500">CASIO</p>
+           <p className="text-md font-bold text-slate-500">made with 💕</p>
+        </div>
         <div className="md:w-[35rem] bg-white rounded-md">
           <InputText
             value={input === "" ? "0" : input}
             onKeyDown={handleKeydown}
           />
           <div className="mt-3 flex mr-5 justify-end ">
-            <p className="p-2 text-xl">{input === "" ? 0 : result}</p>
+            <p className="p-2 text-2xl">{input === "" ? 0 : result}</p>
           </div>
         </div>
         <div className="grid  grid-cols-4 gap-4 mt-10">
