@@ -1,6 +1,6 @@
-import Button from "../components/Button";
+import Button from "./Button";
 import { Dispatch, SetStateAction } from "react";
-import { Identitas, Hasil } from "../page";
+import { Identitas, Hasil } from "../belajarHook/page";
 
 interface BelajarStateProps {
   hasil: Hasil[];
