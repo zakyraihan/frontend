@@ -30,7 +30,7 @@ const Button: React.FC<
     <button
       {...props}
       disabled={isDisabled}
-      className={clsx(` rounded border w-24  capitalize`, {
+      className={clsx(`rounded border p-2 capitalize`, {
         "bg-blue-500 text-white": colorSchema === "blue" && variant === "solid",
         "border-blue-500 text-blue-500":
           colorSchema === "blue" && variant === "outline",
@@ -48,7 +48,7 @@ const Button: React.FC<
         "h-12": width === "md",
       })}
     >
-      {isLoading ? (
+      {!isLoading ? (
         title
       ) : (
         <ClipLoader
