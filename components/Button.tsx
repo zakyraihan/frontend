@@ -30,7 +30,7 @@ const Button: React.FC<
     <button
       {...props}
       disabled={isDisabled}
-      className={clsx(`rounded border p-2 capitalize`, {
+      className={clsx(`rounded border p-1 text-center`, {
         "bg-blue-500 text-white": colorSchema === "blue" && variant === "solid",
         "border-blue-500 text-blue-500":
           colorSchema === "blue" && variant === "outline",
