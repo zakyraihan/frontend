@@ -1,4 +1,4 @@
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { ChangeEvent, Dispatch, ReactNode, SetStateAction } from "react";
 import { BookListFilter } from "@/app/book/interface";
 import InputText from "@/components/InputText";
 import Label from "@/components/Label";
@@ -6,10 +6,10 @@ import Select from "@/components/Select";
 
 type FilterProps = {
   params: BookListFilter;
-  setParams: Dispatch<SetStateAction<BookListFilter>>; // Perubahan di sini
+  setParams: Dispatch<SetStateAction<any>>;
 };
 
-const options = [ // Ubah nama variabel menjadi "options"
+const option = [
   {
     value: 2020,
     label: "2020",
@@ -29,14 +29,14 @@ const options = [ // Ubah nama variabel menjadi "options"
 ];
 
 const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => { // Perubahan di sini
-    const { name, value } = e.target;
-    setParams((prevParams: BookListFilter) => ({
-      ...prevParams,
-      [name]: value,
-    }));
+  const handleChange = (e: ChangeEvent<any>) => {
+    setParams((params: BookListFilter) => {
+      return {
+        ...params,
+        [e.target.name]: e.target.value,
+      };
+    });
   };
-
   return (
     <section className="space-y-2">
       <section>
@@ -58,20 +58,20 @@ const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
         />
       </section>
       <section>
-        <Label title="From Year" htmlFor="from_year" /> {/* Ubah label sesuai dengan properti yang direferensikan */}
+        <Label title="Title" htmlFor="from_year" />
         <Select
           onChange={handleChange}
-          options={options}
+          options={option}
           value={params.from_year}
           name="from_year"
           id="from_year"
         />
       </section>
       <section>
-        <Label title="To Year" htmlFor="to_year" /> {/* Ubah label sesuai dengan properti yang direferensikan */}
+        <Label title="Title" htmlFor="to_year" />
         <Select
           onChange={handleChange}
-          options={options}
+          options={option}
           value={params.to_year}
           name="to_year"
           id="to_year"

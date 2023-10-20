@@ -5,8 +5,8 @@ import Label from "@/components/Label";
 import Select from "@/components/Select";
 import { useFormik, Form, FormikProvider } from "formik";
 import * as yup from "yup";
-import { BookCreatePayload } from "../book/interface";
-import useBookModule from "../book/lib";
+import { BookCreatePayload } from "../interface";
+import useBookModule from "../lib";
 import Link from "next/link";
 import { ArrowLongLeftIcon } from "@heroicons/react/20/solid";
 

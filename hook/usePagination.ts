@@ -3,7 +3,6 @@ import { ChangeEvent, useState } from "react";
 interface PaginationParams {
   page: number;
   pageSize: number;
-
 }
 
 export const usePagination = <T extends PaginationParams>(defaultParams: T) => {
@@ -20,8 +19,12 @@ export const usePagination = <T extends PaginationParams>(defaultParams: T) => {
   };
 
   const handlePageSize = (e: ChangeEvent<any>) => {
-    setParams((params) => ({ ...params, pageSize: e.target.value }));
-    setFilterParams((params) => ({ ...params, pageSize: e.target.value }));
+    setParams((params) => ({ ...params, pageSize: e.target.value, page: 1 }));
+    setFilterParams((params) => ({
+      ...params,
+      pageSize: e.target.value,
+      page: 1,
+    }));
   };
 
   const handlePage = (page: number) => {

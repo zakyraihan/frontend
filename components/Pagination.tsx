@@ -16,7 +16,7 @@ interface PaginationProps {
         total: number;
         total_page: number;
       }
-    | undefined;
+    | any | undefined;
 }
 
 export const Pagination: React.FC<PaginationProps> = ({
