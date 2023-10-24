@@ -1,15 +1,10 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import axiosClient from "@/lib/axiosClient";
-import {
-  BookCreatePayload,
-  BookListFilter,
-  BookListResponse,
-} from "../interface";
-import { usePagination } from "@/hook/usePagination";
-import Swal from "sweetalert2";
+import { BookListFilter, BookListResponse } from "../interface";
+import { ChangeEvent, useState } from "react";
 
 const useBookModule = () => {
-  const defaultParams: BookListFilter = {
+  const defaultParams = {
     title: "",
     author: "",
     from_year: "",
@@ -17,21 +12,45 @@ const useBookModule = () => {
     page: 1,
     pageSize: 10,
   };
+
   const getBookList = async (
     params: BookListFilter
   ): Promise<BookListResponse> => {
     return axiosClient.get("/book/list", { params }).then((res) => res.data);
   };
   const useBookList = () => {
-    const {
-      params,
-      setParams,
-      handleFilter,
-      handleClear,
-      handlePageSize,
-      handlePage,
-      filterParams,
-    } = usePagination(defaultParams);
+    let [params, setParams] = useState<BookListFilter>(defaultParams);
+    let [filterParams, setFilterParams] =
+      useState<BookListFilter>(defaultParams);
+
+    const handleFilter = () => {
+      setFilterParams(() => {
+        return {
+          ...params,
+          page: 1,
+        };
+      });
+      setParams((prevParams) => {
+        return {
+          ...prevParams,
+          page : 1
+        };
+      });
+    };
+
+    const handleClear = () => {
+      setFilterParams(defaultParams);
+      setParams(defaultParams);
+    };
+
+    const handlePageSize = (e: ChangeEvent<any>) => {
+      setParams((params) => ({ ...params, pageSize: e.target.value }));
+      setFilterParams((params) => ({ ...params, pageSize: e.target.value }));
+    };
+    const handlePage = (page: number) => {
+      setParams((params) => ({ ...params, page: page }));
+      setFilterParams((params) => ({ ...params, page: page }));
+    };
 
     const { data, isFetching, isLoading, isError } = useQuery(
       ["/book/list", [filterParams]],
@@ -57,30 +76,7 @@ const useBookModule = () => {
     };
   };
 
-  const useCreateBook = () => {
-    const { mutate, isLoading } = useMutation(
-      (payload: BookCreatePayload) => {
-        return axiosClient.post("/book/create/", payload);
-      },
-      {
-        onSuccess: (response) => {
-          Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: response.data.message,
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        },
-        onError: (error) => {
-          alert("ok");
-        },
-      }
-    );
-    return { mutate, isLoading };
-  };
-
-  return { useBookList, useCreateBook };
+  return { useBookList };
 };
 
 export default useBookModule;

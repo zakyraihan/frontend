@@ -36,6 +36,14 @@ const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
         [e.target.name]: e.target.value,
       };
     });
+
+    if (e.target.name === "to_year") {
+      if (params.from_year ?? 0 > e.target.value) {
+        return alert(
+          `pilih sampai tahun lebih atau sama dengan tahun ${params.from_year}`
+        );
+      }
+    }
   };
   return (
     <section className="space-y-2">
@@ -58,7 +66,7 @@ const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
         />
       </section>
       <section>
-        <Label title="Title" htmlFor="from_year" />
+        <Label title="from_year" htmlFor="from_year" />
         <Select
           onChange={handleChange}
           options={option}
@@ -68,13 +76,14 @@ const Filter: React.FC<FilterProps> = ({ params, setParams }) => {
         />
       </section>
       <section>
-        <Label title="Title" htmlFor="to_year" />
+        <Label title="to_year" htmlFor="to_year" />
         <Select
           onChange={handleChange}
           options={option}
           value={params.to_year}
           name="to_year"
           id="to_year"
+          disabled={params.from_year === ""}
         />
       </section>
     </section>

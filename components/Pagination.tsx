@@ -109,7 +109,7 @@ export const Pagination: React.FC<PaginationProps> = ({
             className={clsx(
               `px-4 py-2 rounded-full text-sm `,
               {
-                "text-blue-500   bg-blue-100/60": page === pageItem,
+                "text-blue-500 border    bg-blue-100/60": page === pageItem,
                 "text-blue-500  border  border-blue-100/60": page !== pageItem,
               },
               {}

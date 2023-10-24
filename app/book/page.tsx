@@ -33,8 +33,9 @@ const Book = () => {
         title="Filter Buku"
         isOpen={isOpen}
       >
-        <Filter params={params} setParams={setParams} />
+        <Filter params={params } setParams={setParams}/>
       </Drawer>
+      {JSON.stringify(params)}
       <section className="w-screen h-screen p-10 overflow-auto ">
         <section className="flex items-center justify-between ">
           <Button
@@ -45,7 +46,6 @@ const Book = () => {
           />
           <Button width="sm" colorSchema="red" title="tambah" />
         </section>
-
         <section className="h-full w-full mt-5 ">
           <Table
             isFetching={isFetching}
