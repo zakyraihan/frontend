@@ -6,10 +6,11 @@ import useBookModule from "./lib";
 import { Drawer } from "@/components/Drawer";
 import Filter from "./module/filter";
 import useDisClosure from "@/hook/useClosure";
+import { useRouter } from "next/navigation";
 
 const Book = () => {
   const { useBookList } = useBookModule();
-
+  const router = useRouter();
   const {
     data,
     isFetching,
@@ -21,7 +22,6 @@ const Book = () => {
     handlePageSize,
     handlePage,
   } = useBookList();
-
   const { isOpen, onOpen, onClose } = useDisClosure();
 
   return (
@@ -33,7 +33,7 @@ const Book = () => {
         title="Filter Buku"
         isOpen={isOpen}
       >
-        <Filter params={params } setParams={setParams}/>
+        <Filter params={params} setParams={setParams} />
       </Drawer>
       {JSON.stringify(params)}
       <section className="w-screen h-screen p-10 overflow-auto ">
@@ -44,9 +44,14 @@ const Book = () => {
             colorSchema="blue"
             title="Filter"
           />
-          <Button width="sm" colorSchema="red" title="tambah" />
+          <Button
+            onClick={() => router.push("/book/tambah")}
+            width="lg"
+            colorSchema="red"
+            title="tambah"
+          />
         </section>
-        <section className="h-full w-full mt-5 ">
+        <section className="h-full w-full mt-5">
           <Table
             isFetching={isFetching}
             isEmpty={data?.data?.length === 0}

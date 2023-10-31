@@ -35,22 +35,17 @@ const option = [
 ];
 
 const CreateBook = () => {
-  const { useCreateBook } = useBookModule();
-  const { mutate, isLoading } = useCreateBook();
-  const onSubmit = async (values: BookCreatePayload) => {
-    mutate(values, {
-      onSuccess: () => {
-        resetForm();
-        setValues(createBookSchema.getDefault());
-      },
-    });
-  };
-
   const formik = useFormik<BookCreatePayload>({
-    initialValues: createBookSchema.getDefault(),
+    initialValues: {
+      title: "",
+      author: "",
+      year: 0,
+    },
     validationSchema: createBookSchema,
     enableReinitialize: true,
-    onSubmit: onSubmit,
+    onSubmit: () => {
+      console.log("ok");
+    },
   });
 
   const {
@@ -63,8 +58,9 @@ const CreateBook = () => {
     resetForm,
     setValues,
   } = formik;
+
   return (
-    <section className="flex items-center  justify-center w-full h-full">
+    <section className="flex items-center justify-center w-full h-screen">
       <section className="w-1/2">
         <Link href={"/book"}>
           <span className="flex items-center">
@@ -74,18 +70,18 @@ const CreateBook = () => {
           </span>
         </Link>
         <h2 className="text-xl font-bold text-gray-500">Tambah Buku</h2>
-
+        value: {JSON.stringify(values)}
+        error: {JSON.stringify(errors)}
         <FormikProvider value={formik}>
-          <Form className="space-y-5" onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} className="space-y-5">
             <section>
               <Label htmlFor="title" title="Title" />
               <InputText
+                onChange={handleChange}
                 value={values.title}
                 placeholder="Judul Buku"
                 id="title"
                 name="title"
-                onChange={handleChange}
-                onBlur={handleBlur}
                 isError={!!errors.title}
                 messageError={errors.title}
               />
@@ -93,12 +89,11 @@ const CreateBook = () => {
             <section>
               <Label htmlFor="author" title="Auhtor" />
               <InputText
+                onChange={handleChange}
                 value={values.author}
                 placeholder="Penulis Buku"
                 id="author"
                 name="author"
-                onChange={handleChange}
-                onBlur={handleBlur}
                 isError={!!errors.author}
                 messageError={errors.author}
               />
@@ -106,24 +101,17 @@ const CreateBook = () => {
             <section>
               <Label htmlFor="year" title="Year" />
               <Select
+                onChange={handleChange}
                 value={values.year}
                 id="year"
                 name="year"
-                onChange={handleChange}
-                onBlur={handleBlur}
                 options={option}
                 isError={!!errors.year}
                 messageError={errors.year}
               />
             </section>
             <section>
-              <Button
-                height="md"
-                title="Simpan"
-                colorSchema="blue"
-                isLoading={isLoading}
-                isDisabled={isLoading}
-              />
+              <Button height="md" title="Simpan" colorSchema="blue" />
             </section>
           </Form>
         </FormikProvider>

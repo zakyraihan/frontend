@@ -21,3 +21,4 @@ export interface BookListFilter extends Partial<Book> {
 }
 
 export interface BookCreatePayload extends Pick<Book, "author" | "title" | "year"> {}
+

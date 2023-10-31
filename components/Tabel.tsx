@@ -20,7 +20,7 @@ export const Table: React.FC<TableProps> = ({
   return (
     <>
       {" "}
-      <table className="w-full  divide-y divide-gray-200 ">{children}</table>
+      <table className="w-full divide-y divide-gray-200 ">{children}</table>
 
       {isError && (
         <div className='flex items-center justify-center w-full h-32'>
