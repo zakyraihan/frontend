@@ -35,17 +35,21 @@ const option = [
 ];
 
 const CreateBook = () => {
+  const { useCreateBook } = useBookModule();
+  const { mutate, isLoading } = useCreateBook();
+  const onSubmit = async (values: BookCreatePayload) => {
+    mutate(values, {
+      onSuccess: () => {
+        resetForm();
+        setValues(createBookSchema.getDefault());
+      },
+    });
+  };
   const formik = useFormik<BookCreatePayload>({
-    initialValues: {
-      title: "",
-      author: "",
-      year: 0,
-    },
+    initialValues: createBookSchema.getDefault(),
     validationSchema: createBookSchema,
     enableReinitialize: true,
-    onSubmit: () => {
-      console.log("ok");
-    },
+    onSubmit: onSubmit,
   });
 
   const {
@@ -64,20 +68,25 @@ const CreateBook = () => {
       <section className="w-1/2">
         <Link href={"/book"}>
           <span className="flex items-center">
-            {" "}
             <ArrowLongLeftIcon className="h-5 w-5 mr-2" />
             Kembali
           </span>
         </Link>
         <h2 className="text-xl font-bold text-gray-500">Tambah Buku</h2>
-        value: {JSON.stringify(values)}
-        error: {JSON.stringify(errors)}
         <FormikProvider value={formik}>
           <Form onSubmit={handleSubmit} className="space-y-5">
             <section>
               <Label htmlFor="title" title="Title" />
               <InputText
-                onChange={handleChange}
+                onBlur={handleBlur}
+                onChange={(e) => {
+                  setFieldValue("title", e.target.value);
+                  if (e.target.value === "ihsan") {
+                    setFieldValue("year", 2023);
+                  } else if (e.target.value === "") {
+                    setFieldValue("year", "");
+                  }
+                }}
                 value={values.title}
                 placeholder="Judul Buku"
                 id="title"
@@ -111,7 +120,21 @@ const CreateBook = () => {
               />
             </section>
             <section>
-              <Button height="md" title="Simpan" colorSchema="blue" />
+              <Button
+                type="submit"
+                height="md"
+                title="Simpan"
+                colorSchema="blue"
+              />
+              <Button
+                type="button"
+                height="md"
+                title="Cancel"
+                colorSchema="red"
+                onClick={() => {
+                  resetForm();
+                }}
+              />
             </section>
           </Form>
         </FormikProvider>

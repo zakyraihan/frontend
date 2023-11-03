@@ -1,7 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axiosClient from "@/lib/axiosClient";
 import { BookListFilter, BookListResponse } from "../interface";
 import { ChangeEvent, useState } from "react";
+import { BookCreatePayload } from "../interface";
+import Swal from "sweetalert2";
 
 const useBookModule = () => {
   const defaultParams = {
@@ -33,7 +35,7 @@ const useBookModule = () => {
       setParams((prevParams) => {
         return {
           ...prevParams,
-          page : 1
+          page: 1,
         };
       });
     };
@@ -76,7 +78,25 @@ const useBookModule = () => {
     };
   };
 
-  return { useBookList };
+  const createBook = (
+    payload: BookCreatePayload
+  ): Promise<BookListResponse> => {
+    return axiosClient.post("/book/create").then((res) => res.data);
+  };
+
+  const useCreateBook = () => {
+    const { mutate, isLoading } = useMutation(
+      (payload: BookCreatePayload) => createBook(payload),
+      {
+        onSuccess: () => {},
+        onError: () => {},
+        onSettled: () => {},
+      }
+    );
+    return { mutate, isLoading };
+  };
+
+  return { useBookList, useCreateBook };
 };
 
 export default useBookModule;

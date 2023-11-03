@@ -16,9 +16,15 @@ export interface BookListResponse extends BaseResponsePagination {
 export interface BookListFilter extends Partial<Book> {
   from_year?: string;
   to_year?: string;
-  page : number ,
-  pageSize : number
+  page: number;
+  pageSize: number;
 }
 
-export interface BookCreatePayload extends Pick<Book, "author" | "title" | "year"> {}
+export interface BookCreatePayload
+  extends Pick<Book, "author" | "title" | "year"> {}
 
+export interface BookCreateResponse {
+  status: string;
+  message: string;
+  data?: Book;
+}

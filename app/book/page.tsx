@@ -35,8 +35,7 @@ const Book = () => {
       >
         <Filter params={params} setParams={setParams} />
       </Drawer>
-      {JSON.stringify(params)}
-      <section className="w-screen h-screen p-10 overflow-auto ">
+      <section className="w-screen h-screen p-10 overflow-auto">
         <section className="flex items-center justify-between ">
           <Button
             width="sm"
