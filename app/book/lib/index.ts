@@ -81,16 +81,33 @@ const useBookModule = () => {
   const createBook = (
     payload: BookCreatePayload
   ): Promise<BookListResponse> => {
-    return axiosClient.post("/book/create").then((res) => res.data);
+    return axiosClient.post("/book/create", payload).then((res) => res.data);
   };
 
   const useCreateBook = () => {
     const { mutate, isLoading } = useMutation(
       (payload: BookCreatePayload) => createBook(payload),
       {
-        onSuccess: () => {},
-        onError: () => {},
-        onSettled: () => {},
+        onSuccess: (response) => {
+          console.log(response);
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: response.message,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        },
+        onError: (err: any) => {
+          console.log(err);
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: 'ada kesalahan',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        },
       }
     );
     return { mutate, isLoading };

@@ -81,11 +81,6 @@ const CreateBook = () => {
                 onBlur={handleBlur}
                 onChange={(e) => {
                   setFieldValue("title", e.target.value);
-                  if (e.target.value === "ihsan") {
-                    setFieldValue("year", 2023);
-                  } else if (e.target.value === "") {
-                    setFieldValue("year", "");
-                  }
                 }}
                 value={values.title}
                 placeholder="Judul Buku"
