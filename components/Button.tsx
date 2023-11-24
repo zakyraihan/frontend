@@ -12,6 +12,7 @@ interface ButtonProps {
   width?: string;
   height?: string;
   isLoading?: boolean;
+  
 }
 
 const Button: React.FC<

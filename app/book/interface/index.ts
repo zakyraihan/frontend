@@ -28,3 +28,16 @@ export interface BookCreateResponse {
   message: string;
   data?: Book;
 }
+
+export interface BookUpdatePayload extends BookCreatePayload {}
+export interface BookUpdateResponse extends BookCreateResponse {}
+export interface BookDetailResponse extends Book {}
+
+export interface BookCreateArrayPayload {
+  data: BookCreatePayload[];
+}
+
+export interface BookDeleteArrayPayload {
+  data: number[];
+}
+

@@ -1,11 +1,26 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  QueryCache,
+  QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import axiosClient from "@/lib/axiosClient";
-import { BookListFilter, BookListResponse } from "../interface";
+import {
+  BookCreateArrayPayload,
+  BookDeleteArrayPayload,
+  BookDetailResponse,
+  BookListFilter,
+  BookListResponse,
+  BookUpdatePayload,
+} from "../interface";
 import { ChangeEvent, useState } from "react";
 import { BookCreatePayload } from "../interface";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const useBookModule = () => {
+  const queryClient = useQueryClient();
   const defaultParams = {
     title: "",
     author: "",
@@ -103,7 +118,7 @@ const useBookModule = () => {
           Swal.fire({
             position: "top-end",
             icon: "error",
-            title: 'ada kesalahan',
+            title: "ada kesalahan",
             showConfirmButton: false,
             timer: 1500,
           });
@@ -113,7 +128,151 @@ const useBookModule = () => {
     return { mutate, isLoading };
   };
 
-  return { useBookList, useCreateBook };
+  const getDetailBook = async (id: string): Promise<BookDetailResponse> => {
+    return axiosClient.get(`/book/detail/${id}`).then((res) => res.data.data);
+  };
+
+  const useDetailBook = (id: string) => {
+    const { data, isLoading, isFetching } = useQuery(
+      ["/book/detail", { id }],
+      () => getDetailBook(id),
+      {
+        select: (response) => response,
+      }
+    );
+
+    return { data, isFetching, isLoading };
+  };
+
+  const useUpdateBook = (id: string) => {
+    const { mutate, isLoading } = useMutation(
+      (payload: BookUpdatePayload) => {
+        return axiosClient.put(`/book/update/${id}`, payload);
+      },
+      {
+        onSuccess: (response) => {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: response.data.message,
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        },
+      }
+    );
+    return { mutate, isLoading };
+  };
+
+  const useDeleteBook = () => {
+    const { mutate, isLoading } = useMutation(
+      (id: number) => {
+        return axiosClient.delete(`/book/delete/${id}`);
+      },
+      {
+        onSuccess: (response) => {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: response.data.message,
+            showConfirmButton: false,
+            timer: 1000,
+          });
+          queryClient.invalidateQueries(["/book/list"]);
+        },
+        onError: (error: any) => {
+          if (error.response.status == 422) {
+            Swal.fire({
+              position: "top",
+              icon: "warning",
+              title: error.response.data.message,
+              showConfirmButton: false,
+              timer: 1000,
+            });
+          } else {
+            Swal.fire({
+              position: "top",
+              icon: "error",
+              title: "Ada Kesalahan",
+              showConfirmButton: false,
+              timer: 1000,
+            });
+          }
+        },
+      }
+    );
+
+    return { mutate, isLoading };
+  };
+
+  const useCreateBulkBook = () => {
+    const { mutate, isLoading } = useMutation(
+      (payload: BookCreateArrayPayload) => {
+        return axiosClient.post("/book/create/bulk", payload);
+      },
+      {
+        onSuccess: (response) => {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: response.data.message,
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        },
+        onError: (error) => {
+          Swal.fire({
+            position: "top",
+            icon: "error",
+            title: "Ada Kesalahan",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        },
+      }
+    );
+    return { mutate, isLoading };
+  };
+
+  const useDeleteBulkBook = () => {
+    const { mutate, isLoading } = useMutation(
+      (payload: BookDeleteArrayPayload) => {
+        return axiosClient.post("/book/delete/bulk", payload);
+      },
+      {
+        onSuccess: (response) => {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: response.data.message,
+            showConfirmButton: false,
+            timer: 1000,
+          });
+          queryClient.invalidateQueries(["/book/list"]);
+        },
+        onError: (err) => {
+          Swal.fire({
+            position: "top",
+            icon: "error",
+            title: "Ada Kesalahan",
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        },
+      }
+    );
+    return { mutate, isLoading};
+  };
+
+  return {
+    useBookList,
+    useCreateBook,
+    useDetailBook,
+    useUpdateBook,
+    useDeleteBook,
+    useCreateBulkBook,
+    useDeleteBulkBook,
+  };
 };
 
 export default useBookModule;

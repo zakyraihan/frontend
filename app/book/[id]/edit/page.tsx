@@ -5,54 +5,43 @@ import Label from "@/components/Label";
 import Select from "@/components/Select";
 import { useFormik, Form, FormikProvider } from "formik";
 import * as yup from "yup";
-import { BookCreatePayload } from "../interface";
-import useBookModule from "../lib";
 import Link from "next/link";
 import { ArrowLongLeftIcon } from "@heroicons/react/20/solid";
+import { option } from "../../tambah/page";
+import useBookModule from "../../lib";
+import { BookUpdatePayload } from "../../interface";
 import { useRouter } from "next/navigation";
 
-export const createBookSchema = yup.object().shape({
+const createBookSchema = yup.object().shape({
   title: yup.string().nullable().default("").required("Wajib isi"),
   author: yup.string().nullable().default("").required("Wajib isi"),
   year: yup.number().nullable().default(undefined).required("Wajib pilih"),
 });
-export const option = [
-  {
-    value: 2020,
-    label: "2020",
-  },
-  {
-    value: 2021,
-    label: "2021",
-  },
-  {
-    value: 2022,
-    label: "2022",
-  },
-  {
-    value: 2023,
-    label: "2023",
-  },
-];
 
-const CreateBook = () => {
+const UpdateBook = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
-  const { useCreateBook } = useBookModule();
-  const { mutate, isLoading } = useCreateBook();
-  const onSubmit = async (values: BookCreatePayload) => {
-    router.push('/book')
-    mutate(values, {
-      onSuccess: () => {
-        resetForm();
-        setValues(createBookSchema.getDefault());
-      },
-    });
-  };
-  const formik = useFormik<BookCreatePayload>({
-    initialValues: createBookSchema.getDefault(),
+  const { useDetailBook, useUpdateBook } = useBookModule();
+  const { mutate, isLoading } = useUpdateBook(params.id);
+  const { data, isFetching } = useDetailBook(params.id);
+
+  const formik = useFormik({
+    initialValues: {
+      title: "",
+      year: "",
+      author: "",
+      id: 0,
+    },
     validationSchema: createBookSchema,
     enableReinitialize: true,
-    onSubmit: onSubmit,
+    onSubmit: (values) => {
+      console.log("submit berjalan", values);
+      mutate(values, {
+        onSuccess: () => {
+          router.push('/book')
+          console.log("sudah selesai");
+        },
+      });
+    },
   });
 
   const {
@@ -66,29 +55,34 @@ const CreateBook = () => {
     setValues,
   } = formik;
 
+  if (isFetching) {
+    return;
+  }
+
   return (
-    <section className="flex items-center justify-center w-full h-screen">
+    <section className="flex items-center  justify-center w-full h-screen">
+      {JSON.stringify(data)}
       <section className="w-1/2">
         <Link href={"/book"}>
           <span className="flex items-center">
+            {" "}
             <ArrowLongLeftIcon className="h-5 w-5 mr-2" />
             Kembali
           </span>
         </Link>
-        <h2 className="text-xl font-bold text-gray-500">Tambah Buku</h2>
+        <h2 className="text-xl font-bold text-gray-500">Perbaharui Buku</h2>
+
         <FormikProvider value={formik}>
-          <Form onSubmit={handleSubmit} className="space-y-5">
+          <Form className="space-y-5" onSubmit={handleSubmit}>
             <section>
               <Label htmlFor="title" title="Title" />
               <InputText
-                onBlur={handleBlur}
-                onChange={(e) => {
-                  setFieldValue("title", e.target.value);
-                }}
                 value={values.title}
                 placeholder="Judul Buku"
                 id="title"
                 name="title"
+                onChange={handleChange}
+                onBlur={handleBlur}
                 isError={!!errors.title}
                 messageError={errors.title}
               />
@@ -96,11 +90,12 @@ const CreateBook = () => {
             <section>
               <Label htmlFor="author" title="Auhtor" />
               <InputText
-                onChange={handleChange}
                 value={values.author}
                 placeholder="Penulis Buku"
                 id="author"
                 name="author"
+                onChange={handleChange}
+                onBlur={handleBlur}
                 isError={!!errors.author}
                 messageError={errors.author}
               />
@@ -108,10 +103,11 @@ const CreateBook = () => {
             <section>
               <Label htmlFor="year" title="Year" />
               <Select
-                onChange={handleChange}
                 value={values.year}
                 id="year"
                 name="year"
+                onChange={handleChange}
+                onBlur={handleBlur}
                 options={option}
                 isError={!!errors.year}
                 messageError={errors.year}
@@ -119,19 +115,11 @@ const CreateBook = () => {
             </section>
             <section>
               <Button
-                type="submit"
                 height="md"
-                title="Simpan"
+                title="Perbarui"
                 colorSchema="blue"
-              />
-              <Button
-                type="button"
-                height="md"
-                title="Cancel"
-                colorSchema="red"
-                onClick={() => {
-                  resetForm();
-                }}
+                isLoading={isLoading}
+                isDisabled={isLoading}
               />
             </section>
           </Form>
@@ -141,4 +129,7 @@ const CreateBook = () => {
   );
 };
 
-export default CreateBook;
+export default UpdateBook;
+function mutate(values: BookUpdatePayload) {
+  throw new Error("Function not implemented.");
+}
