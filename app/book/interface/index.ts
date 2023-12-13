@@ -40,4 +40,3 @@ export interface BookCreateArrayPayload {
 export interface BookDeleteArrayPayload {
   data: number[];
 }
-

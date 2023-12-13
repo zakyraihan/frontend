@@ -16,10 +16,15 @@ import { BookCreateArrayPayload } from "../interface";
 import useBookModule from "../lib";
 import Link from "next/link";
 import { ArrowLongLeftIcon } from "@heroicons/react/20/solid";
-import { createBookSchema } from "../tambah/page";
 import { option } from "../tambah/page";
 import { DeleteButton } from "@/components/ButtonAction";
 import { useRouter } from "next/navigation";
+
+const createBookSchema = yup.object().shape({
+  title: yup.string().nullable().default("").required("Wajib isi"),
+  author: yup.string().nullable().default("").required("Wajib isi"),
+  year: yup.number().nullable().default(undefined).required("Wajib pilih"),
+});
 
 const defaultCatatanArray = {
   data: [
@@ -42,7 +47,7 @@ const CreateBook = () => {
   const { useCreateBulkBook } = useBookModule();
   const { mutate, isLoading } = useCreateBulkBook();
   const onSubmit = async (values: BookCreateArrayPayload) => {
-    router.push('/book')
+    router.push("/book");
     mutate(values, {
       onSuccess: () => {
         resetForm();
@@ -67,8 +72,11 @@ const CreateBook = () => {
     values,
     errors,
     resetForm,
+    touched,
     setValues,
   } = formik;
+
+
 
   return (
     <section className="flex items-center  justify-center w-full h-full overflow-auto py-10">
@@ -108,7 +116,10 @@ const CreateBook = () => {
                             name={`data[${index}]title`}
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            isError={getIn(errors?.data?.[index], "title")}
+                            isError={
+                              getIn(errors?.data?.[index], "title") &&
+                              getIn(touched?.data?.[index], "title")
+                            }
                             messageError={getIn(errors?.data?.[index], "title")}
                           />
                         </section>
@@ -126,7 +137,10 @@ const CreateBook = () => {
                               );
                             }}
                             onBlur={handleBlur}
-                            isError={getIn(errors?.data?.[index], "author")}
+                            isError={
+                              getIn(errors?.data?.[index], "author") &&
+                              getIn(touched?.data?.[index], "author")
+                            }
                             messageError={getIn(
                               errors?.data?.[index],
                               "author"
@@ -142,7 +156,10 @@ const CreateBook = () => {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             options={option}
-                            isError={getIn(errors?.data?.[index], "year")}
+                            isError={
+                              getIn(errors?.data?.[index], "year") &&
+                              getIn(touched?.data?.[index], "year")
+                            }
                             messageError={getIn(errors?.data?.[index], "year")}
                           />
                         </section>

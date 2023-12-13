@@ -87,7 +87,6 @@ const Book = () => {
               onClick={() => {
                 handleDeleteBulk(deletePayload);
               }}
-              isLoading={isLoadingDeleteBulk}
               colorSchema="red"
               isDisabled={deletePayload.length === 0}
               title="Hapus "
@@ -199,7 +198,6 @@ const Book = () => {
                     <Td>
                       <span className="flex items-center space-x-2">
                         <DeleteButton
-                          isLoading={isLoading}
                           onClick={() => {
                             handleDelete(item.id || 0);
                           }}
