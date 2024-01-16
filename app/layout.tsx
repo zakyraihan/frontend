@@ -2,6 +2,7 @@ import { ReactQuery } from '@/components/ReactQuery'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import NavigationBar from '@/components/landing-page/NavigationBar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,7 +18,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`px-5`} >
+      <body className={``} >
+      <NavigationBar />
         <ReactQuery>
           {children}
         </ReactQuery>

@@ -3,17 +3,19 @@ import { ReactNode } from "react";
 
 interface CardProps {
   children: ReactNode;
-  isError?: boolean;
+  isFetching?: boolean;
   isEmpty?: boolean;
+  isError?: boolean;
 }
 
 export const Card: React.FC<CardProps> = ({
-  isError = false,
+  isFetching = false,
   isEmpty = false,
+  isError = false,
   children,
 }) => {
   return (
-    <div className="bg-white shadow-md rounded-md p-6 w-[14rem]">
+    <div className="rounded-md p-4 flex flex-wrap  gap-5 justify-center w-full">
       {children}
 
       {isError && (
@@ -22,7 +24,7 @@ export const Card: React.FC<CardProps> = ({
         </div>
       )}
 
-      {isEmpty && !isError ? (
+      {isEmpty && !isFetching && !isError ? (
         <div className="flex items-center justify-center mt-4">
           <div className="text-lg text-gray-500">Data tidak ditemukan</div>
         </div>
@@ -31,18 +33,10 @@ export const Card: React.FC<CardProps> = ({
   );
 };
 
-interface CardHeaderProps {
-  children: ReactNode;
-}
-
-export const CardHeader: React.FC<CardHeaderProps> = ({ children }) => {
-  return <div className="text-xl font-bold mb-4">{children}</div>;
-};
-
 interface CardBodyProps {
   children: ReactNode;
 }
 
 export const CardBody: React.FC<CardBodyProps> = ({ children }) => {
-  return <div>{children}</div>;
+  return <div className="flex ga">{children}</div>;
 };
