@@ -1,8 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    serverRuntimeConfig: {
-        
-    }
-}
+  serverRuntimeConfig: {
+    async rewrites() {
+      return {
+        source: "/register",
+        destination: "auth/register",
+      };
+    },
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

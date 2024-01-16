@@ -16,4 +16,10 @@ export interface BaseResponsePagination {
   };
 }
 
-export default axiosClient
+export interface BaseResponseSucces {
+  status: string;
+  message: string;
+  data?: any;
+}
+
+export default axiosClient;
