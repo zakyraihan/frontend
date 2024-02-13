@@ -2,7 +2,7 @@ import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthOptions = {
-  // Configure one or more authentication providers
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "credentials",
@@ -30,15 +30,17 @@ export const authOptions: NextAuthOptions = {
       return { ...token, ...user };
     },
     async session({ session, user, token }) {
-      console.log("session", session);
-      console.log("user", user);
-      console.log("token", token);
+      // console.log("session", session);
+      // console.log("user", user);
+      // console.log("token", token);
+      // console.log("role", session.user.role);
 
       session.user.id = Number(token.id);
       session.user.name = token.name;
       session.user.email = token.email;
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
+      session.user.role = token.role;
 
       return session;
     },

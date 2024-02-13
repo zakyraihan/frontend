@@ -55,12 +55,18 @@ const useAuthModule = () => {
             name: response.data.nama,
             email: response.data.email,
             accessToken: response.data.access_token,
+            role: response.data.role,
             refreshToken: response.data.refresh_token,
             redirect: false,
           });
           // await signIn("google");
           toastSuccess(response.message);
-          router.push("/admin");
+          
+          if (response.data.role === "admin") {
+            router.push("/admin");
+          } else {
+            router.push("/siswa");
+          }
         },
         onError: (error: any) => {
           if (error.response.status == 422) {

@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import NextAuthProvider from "@/components/NextAuthProvider";
 import { Session } from "next-auth";
 import { ReactNode } from "react";
+import Loading from "@/components/loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +24,9 @@ export default function RootLayout({ children, session }: NextAuthProps) {
     <html lang="en">
       <body className={``}>
         <NextAuthProvider session={session}>
-          <ReactQuery>{children}</ReactQuery>
+          <ReactQuery>
+            <Loading>{children}</Loading>
+          </ReactQuery>
         </NextAuthProvider>
       </body>
     </html>
