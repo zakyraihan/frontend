@@ -6,6 +6,8 @@ import axiosClient from "@/lib/axiosClient";
 import {
   LoginPayload,
   LoginResponse,
+  LupaPasswordPayload,
+  LupaPasswordResponse,
   ProfileResponse,
   RegisterPayload,
   RegisterResponse,
@@ -14,7 +16,6 @@ import { signIn } from "next-auth/react";
 
 const useAuthModule = () => {
   const { toastError, toastSuccess, toastWarning } = useToast();
-  const router = useRouter();
   const register = async (
     payload: RegisterPayload
   ): Promise<RegisterResponse> => {
@@ -24,6 +25,7 @@ const useAuthModule = () => {
   };
 
   const useRegister = () => {
+    const router = useRouter();
     const { mutate, isLoading, isError, error } = useMutation({
       mutationFn: (payload: RegisterPayload) => register(payload),
       onSuccess: (response) => {
@@ -40,11 +42,77 @@ const useAuthModule = () => {
     return { mutate, isLoading, isError, error };
   };
 
+  // Helper function for password recovery
+  const lupaPassword = async (
+    payload: LupaPasswordPayload
+  ): Promise<LupaPasswordResponse> => {
+    try {
+      const response = await axiosClient.post("/auth/lupa-password", payload);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  // Hook for using password recovery functionality
+  const useLupaPw = () => {
+    const { mutate, isLoading, isError, error } = useMutation({
+      mutationFn: (payload: LupaPasswordPayload) => lupaPassword(payload),
+      onSuccess: (response) => {
+        toastSuccess(response.message);
+        // router.push("/auth/login");
+      },
+      onError: (error: any) => {
+        if (error.response && error.response.status) {
+          toastWarning(error.response.data.message);
+        }
+      },
+    });
+
+    return { mutate, isLoading, isError, error };
+  };
+
+  const resetPassword = async (
+    payload: LupaPasswordPayload,
+    id: string,
+    token: string
+  ): Promise<LupaPasswordResponse> => {
+    try {
+      const response = await axiosClient.post(
+        `/auth/reset-password/${id}/${token}`,
+        payload
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
+  const useResetPassword = (id: string, token: string) => {
+    const { mutate, isLoading, isError, error } = useMutation({
+      mutationFn: (payload: LupaPasswordPayload) =>
+        resetPassword(payload, id, token),
+      onSuccess: (response) => {
+        toastSuccess(response.message);
+      },
+      onError: (error: any) => {
+        if (error.response && error.response.status) {
+          toastWarning(error.response.data.message);
+        }
+      },
+    });
+
+    return { mutate, isLoading, isError, error };
+  };
+
   const login = async (payload: LoginPayload): Promise<LoginResponse> => {
     return axiosClient.post("/auth/login", payload).then((res) => res.data);
   };
 
   const useLogin = () => {
+    const router = useRouter();
     const { mutate, isLoading } = useMutation(
       (payload: LoginPayload) => login(payload),
       {
@@ -61,7 +129,7 @@ const useAuthModule = () => {
           });
           // await signIn("google");
           toastSuccess(response.message);
-          
+
           if (response.data.role === "admin") {
             router.push("/admin");
           } else {
@@ -99,7 +167,7 @@ const useAuthModule = () => {
     return { data, isFetching, isLoading };
   };
 
-  return { useRegister, useLogin, useProfile };
+  return { useRegister, useLogin, useProfile, useLupaPw, useResetPassword };
 };
 
 export default useAuthModule;

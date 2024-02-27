@@ -44,7 +44,7 @@ const Login = () => {
         <h1 className="text-3xl text-blue-400">Login</h1>
       </div>
       <FormikProvider value={formik}>
-        <Form className="space-y-5" onSubmit={handleSubmit}>
+        <Form className="space-y-5  " onSubmit={handleSubmit}>
           <section>
             <Label htmlFor="email" title="Email" />
             <InputText
@@ -75,15 +75,24 @@ const Login = () => {
           </section>
           <section>
             <Button
-              height="lg"
               title="Login"
               colorSchema="blue"
               isLoading={isLoading}
               isDisabled={isLoading}
             />
-            <Link href={"register"}>
-              <Button title="Halaman Register" colorSchema="green" />
-            </Link>
+            <div className="flex flex-row justify-center gap-4 mt-5">
+              <Link href={"register"}>
+                <Button title="Register" colorSchema="green" />
+              </Link>
+
+              <Link href={"lupa-password"}>
+                <Button title="Lupa password" colorSchema="green" />
+              </Link>
+
+              <section>
+                <Button title="Google" colorSchema="red" />
+              </section>
+            </div>
           </section>
         </Form>
       </FormikProvider>

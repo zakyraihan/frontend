@@ -1,14 +1,21 @@
 "use client";
+import { ResetPassword } from "@/app/auth/interface/auth_interface";
+import useAuthModule from "@/app/auth/lib/auth_service";
 import Button from "@/components/Button";
 import InputText from "@/components/InputText";
+import { Form, FormikProvider, getIn, useFormik } from "formik";
 import React from "react";
 import * as yup from "yup";
-import useAuthModule from "../lib/auth_service";
-import { getIn, useFormik, FormikProvider, Form } from "formik";
-import { LupaPasswordPayload } from "../interface/auth_interface";
+
+type Params = {
+  params: {
+    id: string;
+    token: string;
+  };
+};
 
 export const lupaPasswordSchema = yup.object().shape({
-  email: yup
+  new_password: yup
     .string()
     .nullable()
     .default("")
@@ -16,35 +23,40 @@ export const lupaPasswordSchema = yup.object().shape({
     .required("Wajib isi"),
 });
 
-const Page = () => {
-  const { useLupaPw } = useAuthModule();
-  const { mutate, isLoading, isError, error } = useLupaPw();
-  const formik = useFormik<LupaPasswordPayload>({
+const ResetPW = ({ params }: Params) => {
+  const { id, token } = params;
+
+  console.log(id);
+  console.log(token);
+
+  const { useResetPassword } = useAuthModule();
+  const { mutate, isLoading, isError, error } = useResetPassword(id, token);
+  const formik = useFormik<ResetPassword>({
     initialValues: lupaPasswordSchema.getDefault(),
     enableReinitialize: true,
-    onSubmit: (payload) => {
+    onSubmit: (payload: any) => {
       mutate(payload);
       console.log(payload);
     },
   });
 
   const { handleSubmit, handleBlur, values, errors, setFieldValue } = formik;
+
   return (
     <div>
-      <div className="h-[40vh]"></div>
       <FormikProvider value={formik}>
         <Form>
           <InputText
-            name="email"
-            id="email"
-            value={values.email}
-            placeholder="email"
+            name="new_password"
+            id="new_password"
+            value={values.new_password}
+            placeholder="new_password"
             onChange={(e: any) => {
-              setFieldValue("email", e.target.value);
+              setFieldValue("new_password", e.target.value);
             }}
             onBlur={handleBlur}
-            isError={getIn(errors, "email")}
-            messageError={getIn(errors, "email")}
+            isError={getIn(errors, "new_password")}
+            messageError={getIn(errors, "new_password")}
           />
 
           <Button
@@ -59,4 +71,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default ResetPW;
