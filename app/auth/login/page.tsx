@@ -9,6 +9,7 @@ import Button from "@/components/Button";
 import Link from "next/link";
 import useAuthModule from "../lib/auth_service";
 import { LoginPayload } from "../interface/auth_interface";
+import { signIn } from "next-auth/react";
 
 export const registerSchema = yup.object().shape({
   email: yup
@@ -90,7 +91,11 @@ const Login = () => {
               </Link>
 
               <section>
-                <Button title="Google" colorSchema="red" />
+                <Button
+                  title="Google"
+                  colorSchema="red"
+                  onClick={() => signIn('google', {'role': 'siswa'})}
+                />
               </section>
             </div>
           </section>

@@ -16,6 +16,7 @@ import { signIn } from "next-auth/react";
 
 const useAuthModule = () => {
   const { toastError, toastSuccess, toastWarning } = useToast();
+  const router = useRouter();
   const register = async (
     payload: RegisterPayload
   ): Promise<RegisterResponse> => {
@@ -25,7 +26,6 @@ const useAuthModule = () => {
   };
 
   const useRegister = () => {
-    const router = useRouter();
     const { mutate, isLoading, isError, error } = useMutation({
       mutationFn: (payload: RegisterPayload) => register(payload),
       onSuccess: (response) => {
@@ -40,6 +40,47 @@ const useAuthModule = () => {
     });
 
     return { mutate, isLoading, isError, error };
+  };
+
+  const login = async (payload: LoginPayload): Promise<LoginResponse> => {
+    return axiosClient.post("/auth/login", payload).then((res) => res.data);
+  };
+
+  const useLogin = () => {
+    const router = useRouter();
+    const { mutate, isLoading } = useMutation(
+      (payload: LoginPayload) => login(payload),
+      {
+        onSuccess: async (response: any) => {
+          console.log("response", response);
+          await signIn("credentials", {
+            id: response.data.id,
+            name: response.data.nama,
+            email: response.data.email,
+            accessToken: response.data.access_token,
+            role: response.data.role,
+            refreshToken: response.data.refresh_token,
+            redirect: false,
+          });
+          // await signIn("google");
+          toastSuccess(response.message);
+
+          if (response.data.role === "admin") {
+            return router.push("/admin");
+          } else {
+            return router.push("/siswa");
+          }
+        },
+        onError: (error: any) => {
+          if (error.response.status == 422) {
+            toastWarning(error.response.data.message);
+          } else {
+            toastError();
+          }
+        },
+      }
+    );
+    return { mutate, isLoading };
   };
 
   // Helper function for password recovery
@@ -96,6 +137,7 @@ const useAuthModule = () => {
         resetPassword(payload, id, token),
       onSuccess: (response) => {
         toastSuccess(response.message);
+        router.push("/auth/login");
       },
       onError: (error: any) => {
         if (error.response && error.response.status) {
@@ -105,47 +147,6 @@ const useAuthModule = () => {
     });
 
     return { mutate, isLoading, isError, error };
-  };
-
-  const login = async (payload: LoginPayload): Promise<LoginResponse> => {
-    return axiosClient.post("/auth/login", payload).then((res) => res.data);
-  };
-
-  const useLogin = () => {
-    const router = useRouter();
-    const { mutate, isLoading } = useMutation(
-      (payload: LoginPayload) => login(payload),
-      {
-        onSuccess: async (response: any) => {
-          console.log("response", response);
-          await signIn("credentials", {
-            id: response.data.id,
-            name: response.data.nama,
-            email: response.data.email,
-            accessToken: response.data.access_token,
-            role: response.data.role,
-            refreshToken: response.data.refresh_token,
-            redirect: false,
-          });
-          // await signIn("google");
-          toastSuccess(response.message);
-
-          if (response.data.role === "admin") {
-            router.push("/admin");
-          } else {
-            router.push("/siswa");
-          }
-        },
-        onError: (error: any) => {
-          if (error.response.status == 422) {
-            toastWarning(error.response.data.message);
-          } else {
-            toastError();
-          }
-        },
-      }
-    );
-    return { mutate, isLoading };
   };
 
   const getProfile = async (): Promise<ProfileResponse> => {

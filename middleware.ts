@@ -12,6 +12,10 @@ export default withAuth(
     var url = request.nextUrl.pathname;
     var role = request?.nextauth?.token?.role;
 
+    if (!role) {
+      role = "siswa";
+    }
+
     if (url.startsWith("/admin") === true) {
       if (role !== "admin") {
         return NextResponse.redirect(new URL("/siswa", request.url));

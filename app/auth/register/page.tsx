@@ -32,7 +32,6 @@ const Register = () => {
   const { mutate, isLoading, isError, error } = useRegister();
   const formik = useFormik<RegisterPayload>({
     initialValues: registerSchema.getDefault(),
-
     enableReinitialize: true,
     onSubmit: (payload) => {
       mutate(payload);

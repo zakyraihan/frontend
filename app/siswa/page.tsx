@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import useAuthModule from "../auth/lib/auth_service";
 import Spinner from "@/components/Spinner";
 import { signOut } from "next-auth/react";
+import Image from "next/image";
 
 const HalamanSiswa = () => {
   const router = useRouter();
@@ -29,7 +30,7 @@ const HalamanSiswa = () => {
 
   return (
     <div>
-      {/* {JSON.stringify(session)} */}
+      {JSON.stringify(session)}
       <>
         <p>ini adalah halaman siswa</p>
         <p>halo {session?.user.name}</p>

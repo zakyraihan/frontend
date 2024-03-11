@@ -38,7 +38,7 @@ const Admin = () => {
           colorSchema="blue"
           width="40"
           onClick={() => {
-            signOut();
+            signOut({ redirect: false });
             router.push("/auth/login");
           }}
         />

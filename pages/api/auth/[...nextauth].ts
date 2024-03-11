@@ -1,3 +1,4 @@
+import axiosClient from "@/lib/axiosClient";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
@@ -17,13 +18,31 @@ export const authOptions: NextAuthOptions = {
       },
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID || "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      return true;
+    async signIn({ user, account }) {
+
+      try {
+        if (account?.provider == "google") {
+          const payload: any = {
+            id: user.id,
+            nama: user.name,
+            avatar: user.image,
+            id_token: account?.id_token,
+          };
+          
+          // await axiosClient.post("/auth/logingoogle", payload);
+          // console.log("payload", payload);
+          
+        }
+        return true;
+      } catch (error) {
+        console.log(error);
+        return false;
+      }
     },
     async redirect({ url, baseUrl }) {
       return baseUrl;
@@ -31,7 +50,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, account, trigger, session }) {
       console.log("token", token);
       console.log("user", user);
-      return { ...token, ...user };
+      return { ...token, ...user, ...account };
     },
     async session({ session, user, token }) {
       // console.log("session", session);
